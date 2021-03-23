@@ -45,7 +45,7 @@ namespace WebAPI
             //services.AddSingleton<IProductService,ProductManager>();
             //services.AddSingleton<IProductDal, EfProductDal>();
 
-            
+            services.AddCors(); // Frontend'cilerin eriþebilmesi için (Angular projesi)
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -77,7 +77,10 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.ConfigureCustomExceptionMiddleware();
 
+            app.UseCors(builder=>builder.WithOrigins("http://localhost:4200").AllowAnyHeader()); // Frontend'cilerin eriþebilmesi için (Angular projesi). Bu adresten get,post ne gelirse gelsin izin ver demek.
+            // Birden fazla web sayfan var ise virgül ile ayýr.
             app.UseHttpsRedirection();
 
             app.UseRouting();
